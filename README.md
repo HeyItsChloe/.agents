@@ -1,29 +1,64 @@
-# .agents - User-Level Skills
+# .agents - Personal Assistant System
 
-This repository contains user-level skills that apply to **all repositories** owned by [@HeyItsChloe](https://github.com/HeyItsChloe).
+User-level agents and skills for [@HeyItsChloe](https://github.com/HeyItsChloe) — available across all repositories.
 
-## How It Works
+## Agents
 
-When you select any repo you own in OpenHands, it automatically loads skills from this `.agents` repository.
+| Agent | Purpose |
+|-------|---------|
+| `personal-assistant` | Main orchestrator — routes requests to subagents |
+| `email-agent` | Gmail operations (send, read, draft, search) |
+| `schedule-agent` | Google Calendar operations |
+| `automation-agent` | Create/manage OpenHands automations |
+| `interviewer-agent` | Gather requirements via structured Q&A |
+| `agent-creator-agent` | Generate new file-based agents |
+| `progress-agent` | Track goals, GitHub progress, weekly reports |
 
-This tests [PR #14440](https://github.com/OpenHands/OpenHands/pull/14440) which adds support for `.agents` org/user skill repos.
+## Skills
 
-## Skills Included
+| Skill | Purpose |
+|-------|---------|
+| `user-profile` | Personal preferences (timezone, communication style) |
+| `github-context` | GitHub account context (HeyItsChloe, all repos) |
+| `email-style` | Email composition rules (signature, tone) |
+| `weekly-report` | Weekly progress report format |
+| `goals-management` | Manual goals file format (goals.yaml) |
+| `agent-creation` | Standards for creating new agents |
+| `my-standards` | Personal coding preferences |
+| `python-helper` | Python development assistance |
 
-| Skill | Triggers | Description |
-|-------|----------|-------------|
-| `my-standards` | "my standards", "my rules", "how I code" | Personal coding preferences |
-| `python-helper` | "python", "pip", "venv" | Python development assistance |
-
-## Testing
-
-1. Run OpenHands with PR #14440
-2. Select **any** repo owned by HeyItsChloe (e.g., `skills_test`)
-3. Say: "What are my standards?" or "Help me with Python"
-4. Verify the skill loads from this `.agents` repo
-
-## Expected Log Output
+## Files
 
 ```
-Found org skill repo at HeyItsChloe/.agents
+.agents/
+├── agents/           # 7 subagents
+├── skills/           # 8 skills
+├── goals.yaml        # Manual goals tracker
+└── README.md
 ```
+
+## Usage
+
+In any OpenHands conversation with a HeyItsChloe repo selected:
+
+```
+"Check my GitHub progress"        → progress-agent
+"Send an email to..."             → email-agent
+"Schedule a meeting..."           → schedule-agent
+"Create an automation..."         → automation-agent
+"Help me plan something"          → interviewer-agent
+"Create a new agent"              → agent-creator-agent
+```
+
+## Weekly Automation
+
+A weekly progress summary runs every **Saturday at 6:00 AM Pacific**, tracking:
+- GitHub Projects & Milestones
+- Manual goals from `goals.yaml`
+- PRs (merged, open, conflicts)
+- Issues activity
+
+## Setup Required
+
+- **Gmail/Calendar**: Requires Google OAuth credentials (not yet configured)
+- **GitHub**: Uses `GITHUB_TOKEN` (available)
