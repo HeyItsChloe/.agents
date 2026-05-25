@@ -13,6 +13,8 @@ User-level agents and skills for [@HeyItsChloe](https://github.com/HeyItsChloe) 
 | `interviewer-agent` | Gather requirements via structured Q&A |
 | `agent-creator-agent` | Generate new file-based agents |
 | `progress-agent` | Track goals, GitHub progress, weekly reports |
+| `figma-to-code-agent` | Convert Figma designs to React/TSX with Tailwind |
+| `test-writer-agent` | Generate unit tests following OpenHands patterns |
 
 ## Skills
 
@@ -26,13 +28,17 @@ User-level agents and skills for [@HeyItsChloe](https://github.com/HeyItsChloe) 
 | `agent-creation` | Standards for creating new agents |
 | `my-standards` | Personal coding preferences |
 | `python-helper` | Python development assistance |
+| `figma-code-patterns` | Figma → component mapping, property extraction |
+| `tailwind-standards` | Tailwind CSS conventions and best practices |
+| `openhands-code-patterns` | Code patterns based on OpenHands repo |
+| `openhands-test-patterns` | Testing patterns based on OpenHands repo |
 
 ## Files
 
 ```
 .agents/
-├── agents/           # 7 subagents
-├── skills/           # 8 skills
+├── agents/           # 9 subagents
+├── skills/           # 12 skills
 ├── goals.yaml        # Manual goals tracker
 └── README.md
 ```
@@ -48,6 +54,8 @@ In any OpenHands conversation with a HeyItsChloe repo selected:
 "Create an automation..."         → automation-agent
 "Help me plan something"          → interviewer-agent
 "Create a new agent"              → agent-creator-agent
+"Convert this Figma to React"     → figma-to-code-agent
+"Write tests for this module"     → test-writer-agent
 ```
 
 ## Weekly Automation
