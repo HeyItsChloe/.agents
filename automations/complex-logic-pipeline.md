@@ -125,6 +125,15 @@ curl -X POST "https://app.all-hands.dev/api/automation/v1/preset/prompt" \
   }'
 ```
 
+## Live Automation
+
+| Field | Value |
+|-------|-------|
+| **Automation ID** | `2541e763-d4ac-4665-bd9e-4f726de211b6` |
+| **Status** | ✅ Enabled |
+| **Registered** | 2026-06-01 |
+| **Trigger** | `issues.labeled` → `complex-logic` on `HeyItsChloe/*` + `11thandOrange/*` |
+
 ## Verify Registration
 
 ```bash
