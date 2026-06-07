@@ -1,72 +1,59 @@
-# .agents - Personal Assistant System
+# OpenHands Autonomous Development Pipeline
 
-User-level agents and skills for [@HeyItsChloe](https://github.com/HeyItsChloe) — available across all repositories.
+This PR adds an autonomous development pipeline for the [OpenHands](https://github.com/openhands/openhands) repository.
 
-## Agents
+## What This Does
 
-| Agent | Purpose |
-|-------|---------|
-| `personal-assistant` | Main orchestrator — routes requests to subagents |
-| `email-agent` | Gmail operations (send, read, draft, search) |
-| `schedule-agent` | Google Calendar operations |
-| `automation-agent` | Create/manage OpenHands automations |
-| `interviewer-agent` | Gather requirements via structured Q&A |
-| `agent-creator-agent` | Generate new file-based agents |
-| `progress-agent` | Track goals, GitHub progress, weekly reports |
-| `figma-to-code-agent` | Convert Figma designs to React/TSX with Tailwind |
-| `test-writer-agent` | Generate unit tests following OpenHands patterns |
+When you label an issue with `ready-to-implement` on `HeyItsChloe/.agents`, the pipeline will:
 
-## Skills
+1. **Read the issue** and understand what needs to be built
+2. **Create an implementation plan** mapped to the OpenHands codebase
+3. **Write the code** on a dedicated branch
+4. **Add tests** for the new functionality
+5. **Self-review** the changes
+6. **Create a PR** linked to the issue
+7. **Monitor CI** and notify when ready for review
 
-| Skill | Purpose |
-|-------|---------|
-| `user-profile` | Personal preferences (timezone, communication style) |
-| `github-context` | GitHub account context (HeyItsChloe, all repos) |
-| `email-style` | Email composition rules (signature, tone) |
-| `weekly-report` | Weekly progress report format |
-| `goals-management` | Manual goals file format (goals.yaml) |
-| `agent-creation` | Standards for creating new agents |
-| `my-standards` | Personal coding preferences |
-| `python-helper` | Python development assistance |
-| `figma-code-patterns` | Figma → component mapping, property extraction |
-| `tailwind-standards` | Tailwind CSS conventions and best practices |
-| `openhands-code-patterns` | Code patterns based on OpenHands repo |
-| `openhands-test-patterns` | Testing patterns based on OpenHands repo |
+## Tech Stack
 
-## Files
-
-```
-.agents/
-├── agents/           # 9 subagents
-├── skills/           # 12 skills
-├── goals.yaml        # Manual goals tracker
-└── README.md
-```
+- **Language:** Python 3.12-3.13
+- **Package Manager:** Poetry
+- **Test Framework:** pytest, pytest-asyncio
+- **E2E Testing:** Playwright
+- **Frontend:** TypeScript/Vite
+- **Containerization:** Docker
 
 ## Usage
 
-In any OpenHands conversation with a HeyItsChloe repo selected:
+```bash
+# Create an issue
+gh issue create --repo HeyItsChloe/.agents \
+  --title "Add new feature" \
+  --body "Description of the feature"
 
-```
-"Check my GitHub progress"        → progress-agent
-"Send an email to..."             → email-agent
-"Schedule a meeting..."           → schedule-agent
-"Create an automation..."         → automation-agent
-"Help me plan something"          → interviewer-agent
-"Create a new agent"              → agent-creator-agent
-"Convert this Figma to React"     → figma-to-code-agent
-"Write tests for this module"     → test-writer-agent
+# Trigger the pipeline
+gh issue edit <ISSUE_NUMBER> --repo HeyItsChloe/.agents --add-label "ready-to-implement"
 ```
 
-## Weekly Automation
+## Generated Files
 
-A weekly progress summary runs every **Saturday at 6:00 AM Pacific**, tracking:
-- GitHub Projects & Milestones
-- Manual goals from `goals.yaml`
-- PRs (merged, open, conflicts)
-- Issues activity
+```
+.agents/
+├── agents/
+│   ├── ticket-planner.md
+│   ├── code-implementer.md
+│   ├── tester.md
+│   ├── pr-reviewer.md
+│   └── ticket-manager.md
+├── skills/
+│   ├── env-setup.md
+│   ├── ci-monitor.md
+│   └── whatsapp-notifier.md
+└── automations/
+    └── autonomous-dev-pipeline.md
+```
 
-## Setup Required
+## Required Setup
 
-- **Gmail/Calendar**: Requires Google OAuth credentials (not yet configured)
-- **GitHub**: Uses `GITHUB_TOKEN` (available)
+1. Add `GITHUB_TOKEN` secret to OpenHands
+2. Create the `ready-to-implement` label on `HeyItsChloe/.agents`
