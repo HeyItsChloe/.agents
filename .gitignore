@@ -1,0 +1,22 @@
+# macOS
+.DS_Store
+
+# Temporary files
+*.log
+*.tmp
+/tmp/
+/tmp
+
+# Environment files (may contain secrets)
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OpenHands temp files
+/openhands/
