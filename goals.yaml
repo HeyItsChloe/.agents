@@ -1,0 +1,30 @@
+# Personal Goals Tracker
+# Managed by progress-agent
+# Location: ~/.openhands/goals.yaml
+
+goals:
+  - id: goal-001
+    title: "Build Personal Assistant Agent System"
+    description: "Create a multi-agent system with email, calendar, automation, and goal tracking capabilities"
+    target_date: "2024-06-15"
+    progress: 70
+    status: active
+    linked_items:
+      - "github:HeyItsChloe/.agents#1"
+    notes: "Phase 1 (planning) complete. Phase 2 (building) in progress."
+    created_at: "2024-05-23"
+    updated_at: "2024-05-23"
+
+# Template for adding new goals:
+#
+#  - id: goal-XXX
+#    title: "Goal title"
+#    description: "Optional longer description"
+#    target_date: "YYYY-MM-DD"        # Optional
+#    progress: 0                       # 0-100
+#    status: active                    # active | completed | paused | cancelled
+#    linked_items:                     # Optional
+#      - "github:HeyItsChloe/repo#123"
+#    notes: "Any notes"
+#    created_at: "YYYY-MM-DD"
+#    updated_at: "YYYY-MM-DD"

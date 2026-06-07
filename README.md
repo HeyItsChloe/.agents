@@ -1,6 +1,6 @@
 # OpenHands Autonomous Development Pipeline
 
-This is an autonomous development pipeline generated for the [OpenHands](https://github.com/openhands/openhands) repository.
+This PR adds an autonomous development pipeline for the [OpenHands](https://github.com/openhands/openhands) repository.
 
 ## What This Does
 
