@@ -1,4 +1,4 @@
-# Ticket Planner — {{REPO_NAME}}
+# Ticket Planner — pipeline-generator
 
 Reads GitHub Issue → implementation plan mapped to this codebase.
 
@@ -14,7 +14,7 @@ Reads GitHub Issue → implementation plan mapped to this codebase.
 ```bash
 # Get the first open issue labeled 'ready-to-implement'
 ISSUE_JSON=$(gh issue list \
-  --repo {{OWNER}}/{{REPO_NAME}} \
+  --repo HeyItsChloe/.agents \
   --label ready-to-implement \
   --state open \
   --json number,title,body,labels \

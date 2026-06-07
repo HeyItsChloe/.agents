@@ -1,24 +1,24 @@
-# Code Implementer — {{REPO_NAME}}
+# Code Implementer — pipeline-generator
 
 Creates branch, writes code following project patterns.
 
 ## Tech Stack Detected
 
-- **Language:** {{LANGUAGE}}
-- **Framework:** {{FRAMEWORK}}
-- **Package Manager:** {{PACKAGE_MANAGER}}
+- **Language:** markdown
+- **Framework:** none
+- **Package Manager:** none
 
 ## Commands
 
-- **Install:** {{INSTALL_CMD}}
-- **Test:** {{TEST_CMD}}
-- **Build:** {{BUILD_CMD}}
+- **Install:** none
+- **Test:** none
+- **Build:** none
 
 ## Paths
 
-- **Source:** {{SOURCE_DIR}}
-- **Tests:** {{TEST_DIR}}
-- **Config:** {{CONFIG_DIR}}
+- **Source:** ./
+- **Tests:** ./
+- **Config:** .github
 
 ## Process
 
@@ -26,7 +26,7 @@ Creates branch, writes code following project patterns.
 
 ```bash
 ISSUE_NUMBER=$(gh issue list \
-  --repo {{OWNER}}/{{REPO_NAME}} \
+  --repo HeyItsChloe/.agents \
   --label ready-to-implement \
   --state open \
   --json number \
@@ -44,7 +44,7 @@ git checkout -b "impl/$ISSUE_NUMBER-$(date +%Y%m%d-%H%M%S)"
 ### Step 3: Install Dependencies
 
 ```bash
-{{INSTALL_CMD}}
+none
 ```
 
 ### Step 4: Implement Changes
@@ -56,17 +56,17 @@ Based on the implementation plan:
 
 ```bash
 # Explore the codebase structure first
-ls -la {{SOURCE_DIR}}
-find {{SOURCE_DIR}} -name "*.py" -o -name "*.js" -o -name "*.ts" 2>/dev/null | head -20
+ls -la ./
+find ./ -name "*.py" -o -name "*.js" -o -name "*.ts" 2>/dev/null | head -20
 
 # Check existing patterns
-grep -r "class \|function \|def " {{SOURCE_DIR}} 2>/dev/null | head -20
+grep -r "class \|function \|def " ./ 2>/dev/null | head -20
 ```
 
 ### Step 5: Run Tests
 
 ```bash
-{{TEST_CMD}}
+none
 ```
 
 ### Step 6: Fix Any Test Failures
@@ -74,7 +74,7 @@ grep -r "class \|function \|def " {{SOURCE_DIR}} 2>/dev/null | head -20
 ```bash
 # If tests fail, analyze and fix
 # Re-run tests after fixes
-{{TEST_CMD}}
+none
 ```
 
 ### Step 7: Commit Changes

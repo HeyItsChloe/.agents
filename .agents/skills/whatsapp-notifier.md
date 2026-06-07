@@ -55,7 +55,7 @@ fi
 
 ```bash
 if [ -n "$PR_NUMBER" ]; then
-  gh pr comment HeyItsChloe/pipeline-generator/$PR_NUMBER --body "
+  gh pr comment HeyItsChloe/.agents/$PR_NUMBER --body "
 ## 📱 Notification
 
 $([ "$CI_STATUS" == "passed" ] && echo "✅ PR is ready for review" || echo "⚠️ CI status: $CI_STATUS")

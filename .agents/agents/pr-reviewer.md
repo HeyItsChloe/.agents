@@ -1,4 +1,4 @@
-# PR Reviewer — {{REPO_NAME}}
+# PR Reviewer — pipeline-generator
 
 Self-reviews the PR, posts inline comments, iterates on critical issues (max 2 iterations).
 
@@ -9,7 +9,7 @@ Self-reviews the PR, posts inline comments, iterates on critical issues (max 2 i
 ```bash
 # Get current branch PR
 PR_NUMBER=$(gh pr list \
-  --repo {{OWNER}}/{{REPO_NAME}} \
+  --repo HeyItsChloe/.agents \
   --head "$(git branch --show-current)" \
   --json number \
   --limit 1 | jq -r '.[0].number')
@@ -17,7 +17,7 @@ PR_NUMBER=$(gh pr list \
 echo "Reviewing PR #$PR_NUMBER"
 
 # Get the diff
-gh pr diff {{OWNER}}/{{REPO_NAME}}/$PR_NUMBER > /tmp/pr-diff.txt
+gh pr diff HeyItsChloe/.agents/$PR_NUMBER > /tmp/pr-diff.txt
 wc -l /tmp/pr-diff.txt
 ```
 
@@ -58,7 +58,7 @@ For each critical issue found:
 
 ```bash
 # Example: Comment on specific lines
-gh pr comment {{OWNER}}/{{REPO_NAME}}/$PR_NUMBER --body "
+gh pr comment HeyItsChloe/.agents/$PR_NUMBER --body "
 **Review Comment:**
 
 Please address the following issues:
@@ -75,7 +75,7 @@ These are non-blocking suggestions for improvement.
 
 ```bash
 # If there are critical issues, request changes
-gh pr review {{OWNER}}/{{REPO_NAME}}/$PR_NUMBER --request-changes --body "
+gh pr review HeyItsChloe/.agents/$PR_NUMBER --request-changes --body "
 ## PR Review
 
 Reviewed the implementation. Please address the following critical issues before merging:
@@ -103,7 +103,7 @@ Once these are addressed, the PR will be ready for merge.
 
 ```bash
 # If no critical issues or after addressing them:
-gh pr review {{OWNER}}/{{REPO_NAME}}/$PR_NUMBER --approve --body "
+gh pr review HeyItsChloe/.agents/$PR_NUMBER --approve --body "
 ## PR Review ✅
 
 Implementation looks good. The changes are well-structured and follow project patterns.

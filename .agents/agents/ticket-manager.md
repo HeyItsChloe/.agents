@@ -1,4 +1,4 @@
-# Ticket Manager — {{REPO_NAME}}
+# Ticket Manager — pipeline-generator
 
 Pushes branch and creates PR linked to the issue.
 
@@ -11,13 +11,13 @@ BRANCH=$(git branch --show-current)
 echo "Current branch: $BRANCH"
 
 ISSUE_NUMBER=$(gh issue list \
-  --repo {{OWNER}}/{{REPO_NAME}} \
+  --repo HeyItsChloe/.agents \
   --label ready-to-implement \
   --state open \
   --json number \
   --limit 1 | jq -r '.[0].number')
 
-ISSUE_TITLE=$(gh issue view $ISSUE_NUMBER --repo {{OWNER}}/{{REPO_NAME}} --json title --jq '.title')
+ISSUE_TITLE=$(gh issue view $ISSUE_NUMBER --repo HeyItsChloe/.agents --json title --jq '.title')
 
 echo "Will link PR to issue #$ISSUE_NUMBER"
 ```
@@ -33,7 +33,7 @@ git push -u origin $BRANCH
 ```bash
 # Create PR with reference to the issue
 gh pr create \
-  --repo {{OWNER}}/{{REPO_NAME}} \
+  --repo HeyItsChloe/.agents \
   --title "feat: $ISSUE_TITLE" \
   --body "## Summary
 
@@ -58,8 +58,8 @@ Closes #$ISSUE_NUMBER" \
 
 ```bash
 # Get PR number and URL
-PR_URL=$(gh pr view --repo {{OWNER}}/{{REPO_NAME}} --json url --jq '.url')
-PR_NUMBER=$(gh pr view --repo {{OWNER}}/{{REPO_NAME}} --json number --jq '.number')
+PR_URL=$(gh pr view --repo HeyItsChloe/.agents --json url --jq '.url')
+PR_NUMBER=$(gh pr view --repo HeyItsChloe/.agents --json number --jq '.number')
 
 echo "PR created: #$PR_NUMBER"
 echo "URL: $PR_URL"

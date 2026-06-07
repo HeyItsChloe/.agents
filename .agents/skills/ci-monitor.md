@@ -19,7 +19,7 @@ echo "Monitoring CI for PR #$PR_NUMBER"
 ### Step 2: Poll CI Status
 
 ```bash
-gh pr checks $PR_NUMBER --repo HeyItsChloe/pipeline-generator --watch --interval 30
+gh pr checks $PR_NUMBER --repo HeyItsChloe/.agents --watch --interval 30
 ```
 
 ### Step 3: Wait for CI Completion
@@ -30,7 +30,7 @@ START_TIME=$(date +%s)
 RETRIES=0
 
 while [ $RETRIES -lt 3 ]; do
-  STATUS=$(gh pr view $PR_NUMBER --repo HeyItsChloe/pipeline-generator --json statusCheckRollup --jq '.[0].statusCheckRollup[] | select(.state != "SUCCESS") | .state' 2>/dev/null | head -1)
+  STATUS=$(gh pr view $PR_NUMBER --repo HeyItsChloe/.agents --json statusCheckRollup --jq '.[0].statusCheckRollup[] | select(.state != "SUCCESS") | .state' 2>/dev/null | head -1)
   
   if [ -z "$STATUS" ]; then
     echo "All checks passed!"
@@ -53,15 +53,15 @@ done
 ### Step 4: Handle Failures
 
 ```bash
-FAILURES=$(gh pr view $PR_NUMBER --repo HeyItsChloe/pipeline-generator --json statusCheckRollup --jq '.[0].statusCheckRollup[] | select(.state == "FAILURE") | .name' 2>/dev/null)
+FAILURES=$(gh pr view $PR_NUMBER --repo HeyItsChloe/.agents --json statusCheckRollup --jq '.[0].statusCheckRollup[] | select(.state == "FAILURE") | .name' 2>/dev/null)
 
 if [ -n "$FAILURES" ]; then
   echo "Failed checks: $FAILURES"
-  FAILED_RUN_ID=$(gh run list --repo HeyItsChloe/pipeline-generator --limit 5 --json id,conclusion --jq '.[] | select(.conclusion == "failure") | .id' | head -1)
+  FAILED_RUN_ID=$(gh run list --repo HeyItsChloe/.agents --limit 5 --json id,conclusion --jq '.[] | select(.conclusion == "failure") | .id' | head -1)
   
   if [ -n "$FAILED_RUN_ID" ]; then
     echo "Re-running failed job: $FAILED_RUN_ID"
-    gh run rerun $FAILED_RUN_ID --repo HeyItsChloe/pipeline-generator
+    gh run rerun $FAILED_RUN_ID --repo HeyItsChloe/.agents
     RETRIES=$((RETRIES + 1))
   fi
 fi
@@ -70,7 +70,7 @@ fi
 ### Step 5: Report Final Status
 
 ```bash
-FINAL_STATUS=$(gh pr view $PR_NUMBER --repo HeyItsChloe/pipeline-generator --json mergeable --jq '.mergeable')
+FINAL_STATUS=$(gh pr view $PR_NUMBER --repo HeyItsChloe/.agents --json mergeable --jq '.mergeable')
 
 if [ "$FINAL_STATUS" == "true" ]; then
   echo "✅ CI passed - PR is mergeable"
