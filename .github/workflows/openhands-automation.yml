@@ -1,0 +1,133 @@
+name: OpenHands Automation Trigger
+
+on:
+  repository_dispatch:
+    types:
+      - openhands-issue-labeled    # From openhands/openhands repo
+      - postman-webhook           # From Postman webhook
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: 'Issue number (for manual trigger)'
+        required: false
+        type: string
+      issue_url:
+        description: 'Issue URL (for manual trigger)'
+        required: false
+        type: string
+      label_name:
+        description: 'Label name (for manual trigger)'
+        required: false
+        type: string
+
+env:
+  OPENHANDS_HOST: ${{ vars.OPENHANDS_HOST || 'https://app.all-hands.dev' }}
+  OPENHANDS_API_KEY: ${{ secrets.OPENHANDS_API_KEY }}
+
+jobs:
+  trigger-openhands:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Extract trigger information
+        id: trigger_info
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "trigger_type=manual" >> $GITHUB_OUTPUT
+            echo "issue_number=${{ inputs.issue_number || 'N/A' }}" >> $GITHUB_OUTPUT
+            echo "issue_url=${{ inputs.issue_url || 'N/A' }}" >> $GITHUB_OUTPUT
+            echo "label_name=${{ inputs.label_name || 'N/A' }}" >> $GITHUB_OUTPUT
+            echo "source_repo=${{ github.repository }}" >> $GITHUB_OUTPUT
+          else
+            echo "trigger_type=dispatch" >> $GITHUB_OUTPUT
+            echo "issue_number=${{ github.event.client_payload.issue.number || github.event.client_payload.number || 'N/A' }}" >> $GITHUB_OUTPUT
+            echo "issue_url=${{ github.event.client_payload.issue.html_url || github.event.client_payload.html_url || 'N/A' }}" >> $GITHUB_OUTPUT
+            echo "label_name=${{ github.event.client_payload.label.name || github.event.client_payload.label || 'N/A' }}" >> $GITHUB_OUTPUT
+            echo "source_repo=${{ github.event.client_payload.repository || github.repository }}" >> $GITHUB_OUTPUT
+          fi
+        shell: bash
+
+      - name: Validate trigger
+        run: |
+          echo "=== Trigger Information ==="
+          echo "Trigger Type: ${{ steps.trigger_info.outputs.trigger_type }}"
+          echo "Source Repository: ${{ steps.trigger_info.outputs.source_repo }}"
+          echo "Issue Number: ${{ steps.trigger_info.outputs.issue_number }}"
+          echo "Issue URL: ${{ steps.trigger_info.outputs.issue_url }}"
+          echo "Label: ${{ steps.trigger_info.outputs.label_name }}"
+          echo "==========================="
+
+          # Validate that we have required information
+          if [[ "${{ steps.trigger_info.outputs.issue_number }}" == "N/A" && "${{ steps.trigger_info.outputs.issue_url }}" == "N/A" ]]; then
+            echo "::error::No issue information provided"
+            exit 1
+          fi
+
+      - name: Trigger OpenHands Cloud
+        id: trigger
+        run: |
+          # Determine the target URL
+          TARGET_URL="${OPENHANDS_HOST}"
+          if [[ "$TARGET_URL" == *"localhost"* || "$TARGET_URL" == "http://"* || "$TARGET_URL" == "https://http"* ]]; then
+            TARGET_URL="https://app.all-hands.dev"
+          fi
+          echo "Using OpenHands URL: $TARGET_URL"
+
+          # Construct the initial message based on available information
+          if [[ "${{ steps.trigger_info.outputs.issue_url }}" != "N/A" ]]; then
+            ISSUE_TEXT="Issue: ${{ steps.trigger_info.outputs.issue_url }}"
+          else
+            ISSUE_TEXT="Issue Number: ${{ steps.trigger_info.outputs.issue_number }}"
+          fi
+
+          if [[ "${{ steps.trigger_info.outputs.label_name }}" != "N/A" ]]; then
+            LABEL_TEXT="Label: ${{ steps.trigger_info.outputs.label_name }}"
+          else
+            LABEL_TEXT="Label: ready-to-implement"
+          fi
+
+          MESSAGE="A request has been received to trigger OpenHands:
+- $ISSUE_TEXT
+- $LABEL_TEXT
+- Source: ${{ steps.trigger_info.outputs.source_repo }}
+- Trigger Type: ${{ steps.trigger_info.outputs.trigger_type }}"
+
+          # Make the API call to OpenHands Cloud
+          echo "Triggering OpenHands..."
+          API_RESPONSE=$(curl -s -w "\n%{http_code}" --max-time 120 -X POST \
+            "${TARGET_URL}/api/v1/app-conversations" \
+            -H "Content-Type: application/json" \
+            ${OPENHANDS_API_KEY:+-H "Authorization: Bearer $OPENHANDS_API_KEY"} \
+            -d "{
+              \"initial_message\": {
+                \"content\": [
+                  {
+                    \"type\": \"text\",
+                    \"text\": \"$MESSAGE\"
+                  }
+                ]
+              },
+              \"selected_repository\": \"${{ steps.trigger_info.outputs.source_repo }}\"
+            }")
+
+          HTTP_STATUS=$(echo "$API_RESPONSE" | tail -n1)
+          RESPONSE_BODY=$(echo "$API_RESPONSE" | sed '$d')
+
+          echo "HTTP Status: $HTTP_STATUS"
+          echo "Response: $RESPONSE_BODY"
+
+          if [[ "$HTTP_STATUS" == "200" || "$HTTP_STATUS" == "201" ]]; then
+            echo "trigger_success=true" >> $GITHUB_OUTPUT
+            echo "triggered_url=${TARGET_URL}" >> $GITHUB_OUTPUT
+            echo "✅ OpenHands triggered successfully"
+          else
+            echo "trigger_success=false" >> $GITHUB_OUTPUT
+            echo "::error::Failed to trigger OpenHands (HTTP $HTTP_STATUS)"
+            echo "Response: $RESPONSE_BODY"
+            exit 1
+          fi
+
+      - name: Report success
+        if: steps.trigger.outputs.trigger_success == 'true'
+        run: |
+          echo "🎉 OpenHands automation triggered successfully!"
+          echo "View conversation at: ${{ steps.trigger.outputs.triggered_url }}"
