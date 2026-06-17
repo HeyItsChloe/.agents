@@ -4,8 +4,8 @@ Postman collection and environment for managing OpenHands Cloud automations.
 
 ## Files
 
-- `OpenHands_Automations.postman_collection.json` - API requests for all automation operations
-- `OpenHands_Cloud.postman_environment.json` - Environment variables (API key, automation IDs)
+- `Automations_Local.postman_collection.json` - API requests for all automation operations
+- `Automations_Cloud.postman_environment.json` - Environment variables (API key, automation IDs)
 
 ## Repositories Covered
 

@@ -1,6 +1,6 @@
 {
   "info": {
-    "name": "OpenHands Cloud - Automations",
+    "name": "Automations - Local",
     "description": "Postman collection for managing OpenHands Cloud automations.\n\n## Setup\n1. Import both collection and environment JSON files\n2. Set OPENHANDS_API_KEY in the environment\n3. Set ISSUE_NUMBER and REPO in the environment before triggering\n\n## Workflow (Option 3: Specify Issue via Message)\n1. Set ISSUE_NUMBER (e.g., 42) and REPO (e.g., 11thandOrange/BusyBuddy_v2)\n2. POST /dispatch to trigger automation\n3. Poll GET /runs/{run_id} until status=RUNNING and conversation_id appears\n4. POST /messages with issue context\n5. GET /messages to view logs\n\n## Repositories Covered\n- 11thandOrange/BusyBuddy_v2\n- 11thandOrange/OrderMate  \n- HeyItsChloe/mates4ever (Orbit)\n- openhands/openhands",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
@@ -45,8 +45,13 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/automation/v1",
-              "host": ["{{baseUrl}}"],
-              "path": ["automation", "v1"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "automation",
+                "v1"
+              ]
             }
           }
         },
@@ -67,7 +72,10 @@
           "request": {
             "method": "POST",
             "header": [
-              {"key": "Content-Type", "value": "application/json"}
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -75,8 +83,15 @@
             },
             "url": {
               "raw": "{{baseUrl}}/automation/v1/:automation_id/dispatch",
-              "host": ["{{baseUrl}}"],
-              "path": ["automation", "v1", ":automation_id", "dispatch"],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "automation",
+                "v1",
+                ":automation_id",
+                "dispatch"
+              ],
               "variable": [
                 {
                   "key": "automation_id",
@@ -109,11 +124,25 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/automation/v1/:automation_id/runs/:run_id",
-              "host": ["{{baseUrl}}"],
-              "path": ["automation", "v1", ":automation_id", "runs", ":run_id"],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "automation",
+                "v1",
+                ":automation_id",
+                "runs",
+                ":run_id"
+              ],
               "variable": [
-                {"key": "automation_id", "value": "{{AUTOMATION_ID}}"},
-                {"key": "run_id", "value": "{{run_id}}"}
+                {
+                  "key": "automation_id",
+                  "value": "{{AUTOMATION_ID}}"
+                },
+                {
+                  "key": "run_id",
+                  "value": "{{run_id}}"
+                }
               ]
             },
             "description": "Poll until status=RUNNING and conversation_id appears"
@@ -124,7 +153,10 @@
           "request": {
             "method": "POST",
             "header": [
-              {"key": "Content-Type", "value": "application/json"}
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -132,10 +164,19 @@
             },
             "url": {
               "raw": "{{baseUrl}}/conversation/:conversation_id/messages",
-              "host": ["{{baseUrl}}"],
-              "path": ["conversation", ":conversation_id", "messages"],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "conversation",
+                ":conversation_id",
+                "messages"
+              ],
               "variable": [
-                {"key": "conversation_id", "value": "{{conversation_id}}"}
+                {
+                  "key": "conversation_id",
+                  "value": "{{conversation_id}}"
+                }
               ]
             },
             "description": "Send the issue context to the conversation. This tells the agent which issue to work on."
@@ -148,10 +189,19 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/conversation/:conversation_id/messages",
-              "host": ["{{baseUrl}}"],
-              "path": ["conversation", ":conversation_id", "messages"],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "conversation",
+                ":conversation_id",
+                "messages"
+              ],
               "variable": [
-                {"key": "conversation_id", "value": "{{conversation_id}}"}
+                {
+                  "key": "conversation_id",
+                  "value": "{{conversation_id}}"
+                }
               ]
             },
             "description": "View all messages in the conversation (logs)"
@@ -164,13 +214,26 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/automation/v1/:automation_id/runs?limit=10",
-              "host": ["{{baseUrl}}"],
-              "path": ["automation", "v1", ":automation_id", "runs"],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "automation",
+                "v1",
+                ":automation_id",
+                "runs"
+              ],
               "query": [
-                {"key": "limit", "value": "10"}
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
               ],
               "variable": [
-                {"key": "automation_id", "value": "{{AUTOMATION_ID}}"}
+                {
+                  "key": "automation_id",
+                  "value": "{{AUTOMATION_ID}}"
+                }
               ]
             }
           }
@@ -182,10 +245,19 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/automation/v1/:automation_id",
-              "host": ["{{baseUrl}}"],
-              "path": ["automation", "v1", ":automation_id"],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "automation",
+                "v1",
+                ":automation_id"
+              ],
               "variable": [
-                {"key": "automation_id", "value": "{{AUTOMATION_ID}}"}
+                {
+                  "key": "automation_id",
+                  "value": "{{AUTOMATION_ID}}"
+                }
               ]
             }
           }
@@ -215,13 +287,26 @@
               "request": {
                 "method": "POST",
                 "header": [
-                  {"key": "Content-Type", "value": "application/json"}
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
                 ],
-                "body": {"mode": "raw", "raw": "{\n    \"keep_alive\": false\n}"},
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"keep_alive\": false\n}"
+                },
                 "url": {
                   "raw": "{{baseUrl}}/automation/v1/dcef1629-3d1d-460e-aabc-df497b3a1780/dispatch",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["automation", "v1", "dcef1629-3d1d-460e-aabc-df497b3a1780", "dispatch"]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "automation",
+                    "v1",
+                    "dcef1629-3d1d-460e-aabc-df497b3a1780",
+                    "dispatch"
+                  ]
                 },
                 "description": "Trigger BusyBuddy Autonomous Dev pipeline. Then use Core Ops to send issue context."
               }
@@ -233,9 +318,21 @@
                 "header": [],
                 "url": {
                   "raw": "{{baseUrl}}/automation/v1/dcef1629-3d1d-460e-aabc-df497b3a1780/runs?limit=5",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["automation", "v1", "dcef1629-3d1d-460e-aabc-df497b3a1780", "runs"],
-                  "query": [{"key": "limit", "value": "5"}]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "automation",
+                    "v1",
+                    "dcef1629-3d1d-460e-aabc-df497b3a1780",
+                    "runs"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "5"
+                    }
+                  ]
                 }
               }
             },
@@ -246,8 +343,14 @@
                 "header": [],
                 "url": {
                   "raw": "{{baseUrl}}/automation/v1/dcef1629-3d1d-460e-aabc-df497b3a1780",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["automation", "v1", "dcef1629-3d1d-460e-aabc-df497b3a1780"]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "automation",
+                    "v1",
+                    "dcef1629-3d1d-460e-aabc-df497b3a1780"
+                  ]
                 }
               }
             }
@@ -273,13 +376,26 @@
               "request": {
                 "method": "POST",
                 "header": [
-                  {"key": "Content-Type", "value": "application/json"}
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
                 ],
-                "body": {"mode": "raw", "raw": "{\n    \"keep_alive\": false\n}"},
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"keep_alive\": false\n}"
+                },
                 "url": {
                   "raw": "{{baseUrl}}/automation/v1/a90b4b0a-4e2c-442b-8900-2fc9404621f7/dispatch",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["automation", "v1", "a90b4b0a-4e2c-442b-8900-2fc9404621f7", "dispatch"]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "automation",
+                    "v1",
+                    "a90b4b0a-4e2c-442b-8900-2fc9404621f7",
+                    "dispatch"
+                  ]
                 }
               }
             },
@@ -290,9 +406,21 @@
                 "header": [],
                 "url": {
                   "raw": "{{baseUrl}}/automation/v1/a90b4b0a-4e2c-442b-8900-2fc9404621f7/runs?limit=5",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["automation", "v1", "a90b4b0a-4e2c-442b-8900-2fc9404621f7", "runs"],
-                  "query": [{"key": "limit", "value": "5"}]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "automation",
+                    "v1",
+                    "a90b4b0a-4e2c-442b-8900-2fc9404621f7",
+                    "runs"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "5"
+                    }
+                  ]
                 }
               }
             }
@@ -323,13 +451,26 @@
               "request": {
                 "method": "POST",
                 "header": [
-                  {"key": "Content-Type", "value": "application/json"}
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
                 ],
-                "body": {"mode": "raw", "raw": "{\n    \"keep_alive\": false\n}"},
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"keep_alive\": false\n}"
+                },
                 "url": {
                   "raw": "{{baseUrl}}/automation/v1/a2160444-1cd6-4b58-867c-f80bf244c288/dispatch",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["automation", "v1", "a2160444-1cd6-4b58-867c-f80bf244c288", "dispatch"]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "automation",
+                    "v1",
+                    "a2160444-1cd6-4b58-867c-f80bf244c288",
+                    "dispatch"
+                  ]
                 }
               }
             },
@@ -340,9 +481,21 @@
                 "header": [],
                 "url": {
                   "raw": "{{baseUrl}}/automation/v1/a2160444-1cd6-4b58-867c-f80bf244c288/runs?limit=5",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["automation", "v1", "a2160444-1cd6-4b58-867c-f80bf244c288", "runs"],
-                  "query": [{"key": "limit", "value": "5"}]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "automation",
+                    "v1",
+                    "a2160444-1cd6-4b58-867c-f80bf244c288",
+                    "runs"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "5"
+                    }
+                  ]
                 }
               }
             }
@@ -368,13 +521,26 @@
               "request": {
                 "method": "POST",
                 "header": [
-                  {"key": "Content-Type", "value": "application/json"}
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
                 ],
-                "body": {"mode": "raw", "raw": "{\n    \"keep_alive\": false\n}"},
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"keep_alive\": false\n}"
+                },
                 "url": {
                   "raw": "{{baseUrl}}/automation/v1/4b407b72-551f-4f99-8950-d168759be2b7/dispatch",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["automation", "v1", "4b407b72-551f-4f99-8950-d168759be2b7", "dispatch"]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "automation",
+                    "v1",
+                    "4b407b72-551f-4f99-8950-d168759be2b7",
+                    "dispatch"
+                  ]
                 }
               }
             },
@@ -385,9 +551,21 @@
                 "header": [],
                 "url": {
                   "raw": "{{baseUrl}}/automation/v1/4b407b72-551f-4f99-8950-d168759be2b7/runs?limit=5",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["automation", "v1", "4b407b72-551f-4f99-8950-d168759be2b7", "runs"],
-                  "query": [{"key": "limit", "value": "5"}]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "automation",
+                    "v1",
+                    "4b407b72-551f-4f99-8950-d168759be2b7",
+                    "runs"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "5"
+                    }
+                  ]
                 }
               }
             }
@@ -418,13 +596,26 @@
               "request": {
                 "method": "POST",
                 "header": [
-                  {"key": "Content-Type", "value": "application/json"}
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
                 ],
-                "body": {"mode": "raw", "raw": "{\n    \"keep_alive\": false\n}"},
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"keep_alive\": false\n}"
+                },
                 "url": {
                   "raw": "{{baseUrl}}/automation/v1/c14e1769-8b86-4554-8c4b-f9f4d25400aa/dispatch",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["automation", "v1", "c14e1769-8b86-4554-8c4b-f9f4d25400aa", "dispatch"]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "automation",
+                    "v1",
+                    "c14e1769-8b86-4554-8c4b-f9f4d25400aa",
+                    "dispatch"
+                  ]
                 }
               }
             },
@@ -435,9 +626,21 @@
                 "header": [],
                 "url": {
                   "raw": "{{baseUrl}}/automation/v1/c14e1769-8b86-4554-8c4b-f9f4d25400aa/runs?limit=5",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["automation", "v1", "c14e1769-8b86-4554-8c4b-f9f4d25400aa", "runs"],
-                  "query": [{"key": "limit", "value": "5"}]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "automation",
+                    "v1",
+                    "c14e1769-8b86-4554-8c4b-f9f4d25400aa",
+                    "runs"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "5"
+                    }
+                  ]
                 }
               }
             }
@@ -463,13 +666,26 @@
               "request": {
                 "method": "POST",
                 "header": [
-                  {"key": "Content-Type", "value": "application/json"}
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
                 ],
-                "body": {"mode": "raw", "raw": "{\n    \"keep_alive\": false\n}"},
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"keep_alive\": false\n}"
+                },
                 "url": {
                   "raw": "{{baseUrl}}/automation/v1/d4e8824f-cb8d-4176-a902-ee4821e348a4/dispatch",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["automation", "v1", "d4e8824f-cb8d-4176-a902-ee4821e348a4", "dispatch"]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "automation",
+                    "v1",
+                    "d4e8824f-cb8d-4176-a902-ee4821e348a4",
+                    "dispatch"
+                  ]
                 }
               }
             },
@@ -480,9 +696,21 @@
                 "header": [],
                 "url": {
                   "raw": "{{baseUrl}}/automation/v1/d4e8824f-cb8d-4176-a902-ee4821e348a4/runs?limit=5",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["automation", "v1", "d4e8824f-cb8d-4176-a902-ee4821e348a4", "runs"],
-                  "query": [{"key": "limit", "value": "5"}]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "automation",
+                    "v1",
+                    "d4e8824f-cb8d-4176-a902-ee4821e348a4",
+                    "runs"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "5"
+                    }
+                  ]
                 }
               }
             }
@@ -513,13 +741,26 @@
               "request": {
                 "method": "POST",
                 "header": [
-                  {"key": "Content-Type", "value": "application/json"}
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
                 ],
-                "body": {"mode": "raw", "raw": "{\n    \"keep_alive\": false\n}"},
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"keep_alive\": false\n}"
+                },
                 "url": {
                   "raw": "{{baseUrl}}/automation/v1/c0bcb429-57fb-4f9b-af84-90adfec5e01a/dispatch",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["automation", "v1", "c0bcb429-57fb-4f9b-af84-90adfec5e01a", "dispatch"]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "automation",
+                    "v1",
+                    "c0bcb429-57fb-4f9b-af84-90adfec5e01a",
+                    "dispatch"
+                  ]
                 },
                 "description": "Manual trigger only - openhands/openhands does NOT have auto-trigger workflow. Use mates4ever automation for auto-triggers."
               }
@@ -531,9 +772,21 @@
                 "header": [],
                 "url": {
                   "raw": "{{baseUrl}}/automation/v1/c0bcb429-57fb-4f9b-af84-90adfec5e01a/runs?limit=5",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["automation", "v1", "c0bcb429-57fb-4f9b-af84-90adfec5e01a", "runs"],
-                  "query": [{"key": "limit", "value": "5"}]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "automation",
+                    "v1",
+                    "c0bcb429-57fb-4f9b-af84-90adfec5e01a",
+                    "runs"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "5"
+                    }
+                  ]
                 }
               }
             },
@@ -544,8 +797,14 @@
                 "header": [],
                 "url": {
                   "raw": "{{baseUrl}}/automation/v1/c0bcb429-57fb-4f9b-af84-90adfec5e01a",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["automation", "v1", "c0bcb429-57fb-4f9b-af84-90adfec5e01a"]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "automation",
+                    "v1",
+                    "c0bcb429-57fb-4f9b-af84-90adfec5e01a"
+                  ]
                 }
               }
             }
