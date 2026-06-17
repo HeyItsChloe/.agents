@@ -1,18 +1,11 @@
-# OpenHands Cloud - Postman Collection
+# OpenHands - Postman Collection
 
-Postman collection and environment for managing OpenHands Cloud automations.
+Trigger OpenHands automations with a single click via GitHub repository_dispatch.
 
 ## Files
 
-- `Automations_Local.postman_collection.json` - API requests for all automation operations
-- `Automations_Cloud.postman_environment.json` - Environment variables (API key, automation IDs)
-
-## Repositories Covered
-
-- `11thandOrange/BusyBuddy_v2`
-- `11thandOrange/OrderMate`
-- `HeyItsChloe/mates4ever` (Orbit)
-- `openhands/openhands`
+- `Automations_Local.postman_collection.json` - Postman collection
+- `Automations_Cloud.postman_environment.json` - Environment with variables
 
 ## Setup
 
@@ -20,134 +13,102 @@ Postman collection and environment for managing OpenHands Cloud automations.
 
 1. Open Postman
 2. Click **Import** → Select both JSON files
-3. The collection and environment will be added
+3. Select the **Automations - GitHub Dispatch** environment
 
 ### 2. Configure Environment
 
-1. Select the **OpenHands Cloud** environment
-2. Set your API key:
-   - Go to https://app.all-hands.dev/settings/api-keys
-   - Copy your API key
-   - Paste into the `OPENHANDS_API_KEY` variable (mark as "Secret")
+1. Set `GITHUB_TOKEN`:
+   - Create a GitHub Personal Access Token: https://github.com/settings/tokens
+   - Required scope: `repo` (full control)
+   - Paste into the `GITHUB_TOKEN` variable (mark as "Secret")
 
-## How to Specify an Issue (Option 3)
+## Usage
 
-**You can specify which GitHub issue to process via a message sent after triggering!**
+### Quick Start
 
-### Step-by-Step Workflow
+1. Set `ISSUE_NUMBER` (e.g., `42`)
+2. Set `REPO` (e.g., `11thandOrange/BusyBuddy_v2`)
+3. Navigate to **📁 Per-Repository Quick Triggers** → Select your repo
+4. Click **Send**
+
+That's it! The workflow handles everything else.
+
+### How It Works
 
 ```
-┌──────────────────────────────────────────────────────────────────┐
-│  1. SET ENVIRONMENT VARIABLES                                     │
-│     • ISSUE_NUMBER = 42 (your issue number)                      │
-│     • REPO = 11thandOrange/BusyBuddy_v2                         │
-└──────────────────────────────────────────────────────────────────┘
-                              │
-                              ▼
-┌──────────────────────────────────────────────────────────────────┐
-│  2. TRIGGER AUTOMATION                                           │
-│     Navigate to repo folder → Pipeline → "Trigger with Issue"     │
-│     → Click Send                                                  │
-│     → Copy the run_id from response                              │
-└──────────────────────────────────────────────────────────────────┘
-                              │
-                              ▼
-┌──────────────────────────────────────────────────────────────────┐
-│  3. POLL FOR STATUS                                              │
-│     Core Operations → Poll Run Status                            │
-│     → Use the run_id from step 2                                 │
-│     → Click Send repeatedly until status=RUNNING                 │
-│     → Copy the conversation_id                                   │
-└──────────────────────────────────────────────────────────────────┘
-                              │
-                              ▼
-┌──────────────────────────────────────────────────────────────────┐
-│  4. SEND ISSUE CONTEXT MESSAGE ★                                  │
-│     Core Operations → Send Issue Context Message                  │
-│     → conversation_id is auto-filled                             │
-│     → ISSUE_NUMBER and REPO are used in the message              │
-│     → This tells the agent WHICH issue to process!               │
-└──────────────────────────────────────────────────────────────────┘
-                              │
-                              ▼
-┌──────────────────────────────────────────────────────────────────┐
-│  5. VIEW LOGS                                                    │
-│     Core Operations → Get Conversation Messages                  │
-│     → Click Send to see agent progress                            │
-│     → Keep polling to watch the agent work                       │
-└──────────────────────────────────────────────────────────────────┘
+Postman → GitHub repository_dispatch → HeyItsChloe/.agents workflow → OpenHands Cloud
 ```
 
-### The Message Payload
-
-When you use "Send Issue Context Message", it sends:
-
+The POST request sends:
 ```json
 {
-  "role": "user",
-  "content": "Please process GitHub issue #42 in repository 11thandOrange/BusyBuddy_v2.\n\nFetch the issue details, implement the requested changes, create tests, and open a pull request.\n\nIssue URL: https://github.com/11thandOrange/BusyBuddy_v2/issues/42"
+  "event_type": "postman-webhook",
+  "client_payload": {
+    "issue": {
+      "number": 42,
+      "html_url": "https://github.com/11thandOrange/BusyBuddy_v2/issues/42"
+    },
+    "label": {
+      "name": "ready-to-implement"
+    },
+    "repository": "11thandOrange/BusyBuddy_v2"
+  }
 }
 ```
 
-The agent will:
-1. Fetch the issue from GitHub
-2. Understand the requirements
-3. Implement the changes
-4. Create tests
-5. Open a pull request
+The GitHub workflow extracts the issue info and triggers OpenHands.
 
-## Automations Available
+## Repositories & Pipelines
 
-| Repository | Pipeline | Automation ID |
-|------------|----------|--------------|
-| BusyBuddy_v2 | Autonomous Dev | `dcef1629-3d1d-460e-aabc-df497b3a1780` |
-| BusyBuddy_v2 | Complex Logic | `a90b4b0a-4e2c-442b-8900-2fc9404621f7` |
-| OrderMate | Autonomous Dev | `a2160444-1cd6-4b58-867c-f80bf244c288` |
-| OrderMate | Complex Logic | `4b407b72-551f-4f99-8950-d168759be2b7` |
-| mates4ever (Orbit) | Autonomous Dev | `c14e1769-8b86-4554-8c4b-f9f4d25400aa` |
-| mates4ever (Orbit) | Complex Logic | `d4e8824f-cb8d-4176-a902-ee4821e348a4` |
-| openhands/openhands | Dev Pipeline | `c0bcb429-57fb-4f9b-af84-90adfec5e01a` |
+| Repository | Pipeline | Label |
+|------------|----------|-------|
+| 11thandOrange/BusyBuddy_v2 | Autonomous Dev | ready-to-implement |
+| 11thandOrange/BusyBuddy_v2 | Complex Logic | complex-logic |
+| 11thandOrange/OrderMate | Autonomous Dev | ready-to-implement |
+| 11thandOrange/OrderMate | Complex Logic | complex-logic |
+| HeyItsChloe/mates4ever | Autonomous Dev | ready-to-implement |
+| HeyItsChloe/mates4ever | Complex Logic | complex-logic |
+| openhands/openhands | Dev Pipeline | openhands-ready |
 
-## API Endpoints Used
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/automation/v1/{id}/dispatch` | Trigger automation |
-| GET | `/automation/v1/{id}/runs/{run_id}` | Poll run status |
-| POST | `/conversation/{id}/messages` | Send issue context |
-| GET | `/conversation/{id}/messages` | View logs |
-
-## Postman Collection Variables
+## Environment Variables
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `baseUrl` | `https://app.all-hands.dev/api` | API base URL |
-| `OPENHANDS_API_KEY` | (empty) | Your API key |
-| `ISSUE_NUMBER` | `42` | GitHub issue to process |
-| `REPO` | `11thandOrange/BusyBuddy_v2` | Repository |
-| `AUTOMATION_ID` | (set by trigger) | Current automation |
-| `run_id` | (set by trigger) | Current run |
-| `conversation_id` | (set by poll) | For logs |
+| `GITHUB_TOKEN` | (empty) | GitHub PAT with repo scope |
+| `TARGET_REPO` | HeyItsChloe/.agents | Repo to dispatch to |
+| `ISSUE_NUMBER` | 42 | Issue number to process |
+| `REPO` | 11thandOrange/BusyBuddy_v2 | Source repository |
+| `LABEL` | ready-to-implement | Label to pass |
 
 ## Troubleshooting
 
 ### "401 Unauthorized"
-- Check that `OPENHANDS_API_KEY` is set correctly
-- Make sure it's marked as a "Secret" type in Postman
+- Verify `GITHUB_TOKEN` is set and valid
+- Ensure token has `repo` scope
 
-### No `conversation_id` in response
-- Poll the run status endpoint every 5-10 seconds
-- Status lifecycle: `PENDING` → `RUNNING` → `COMPLETED/FAILED`
+### "404 Not Found"
+- Check `TARGET_REPO` is correct (usually `HeyItsChloe/.agents`)
 
-### View in Browser
-For real-time log viewing, open:
+### "422 Unprocessable Entity"
+- Verify `ISSUE_NUMBER` is a valid number
+- Ensure `REPO` format is `owner/repo`
+
+## Direct cURL Example
+
+```bash
+curl -X POST https://api.github.com/repos/HeyItsChloe/.agents/dispatches \
+  -H "Accept: application/vnd.github.v3+json" \
+  -H "Authorization: token $GITHUB_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "event_type": "postman-webhook",
+    "client_payload": {
+      "issue": {
+        "number": 42,
+        "html_url": "https://github.com/11thandOrange/BusyBuddy_v2/issues/42"
+      },
+      "label": {"name": "ready-to-implement"},
+      "repository": "11thandOrange/BusyBuddy_v2"
+    }
+  }'
 ```
-https://app.all-hands.dev/conversations/{conversation_id}
-```
-
-## Important Notes
-
-- **NO NEW AUTOMATIONS ARE CREATED** in this repository
-- **NO BRANCHES OR ISSUES** are created in `openhands/openhands`
-- The workflow lets you specify ANY issue via the message payload
-- You can re-use the same automation for different issues by changing `ISSUE_NUMBER` and `REPO`
