@@ -1,316 +1,132 @@
 {
   "info": {
     "name": "Automations - Local",
-    "description": "Trigger OpenHands automations via GitHub repository_dispatch.\n\n## Setup\n1. Import this collection into Postman\n2. Set GITHUB_TOKEN in the environment (GitHub Personal Access Token)\n3. Set ISSUE_NUMBER before triggering\n4. Click Send - that's it!\n\n## How It Works\n- Posts a repository_dispatch event to HeyItsChloe/.agents\n- The GitHub workflow extracts the issue info and triggers OpenHands\n- No polling, no extra steps - one click!",
+    "description": "Trigger OpenHands via GitHub repository_dispatch. One click per issue.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
-    {
-      "key": "GITHUB_TOKEN",
-      "value": "",
-      "description": "GitHub Personal Access Token with repo scope"
-    },
-    {
-      "key": "TARGET_REPO",
-      "value": "HeyItsChloe/.agents",
-      "description": "Repository to dispatch to (usually HeyItsChloe/.agents)"
-    },
-    {
-      "key": "ISSUE_NUMBER",
-      "value": "42",
-      "description": "GitHub issue number to process"
-    },
-    {
-      "key": "REPO",
-      "value": "11thandOrange/BusyBuddy_v2",
-      "description": "Repository where the issue lives (owner/repo)"
-    },
-    {
-      "key": "LABEL",
-      "value": "ready-to-implement",
-      "description": "Label that triggered this (e.g., ready-to-implement, complex-logic)"
-    }
+    {"key": "GITHUB_TOKEN", "value": "", "description": "GitHub PAT with repo scope"},
+    {"key": "TARGET_REPO", "value": "HeyItsChloe/.agents"},
+    {"key": "ISSUE_NUMBER", "value": "42"},
+    {"key": "REPO", "value": "11thandOrange/BusyBuddy_v2"},
+    {"key": "LABEL", "value": "ready-to-implement"}
   ],
   "auth": {
     "type": "bearer",
-    "bearer": [
-      {
-        "key": "token",
-        "value": "{{GITHUB_TOKEN}}",
-        "type": "string"
-      }
-    ]
+    "bearer": [{"key": "token", "value": "{{GITHUB_TOKEN}}", "type": "string"}]
   },
   "item": [
     {
-      "name": "📤 Trigger OpenHands",
-      "item": [
-        {
-          "name": "Trigger with Issue Number",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test('Successful dispatch', function() {",
-                  "    pm.response.to.have.status(204);",
-                  "});",
-                  "",
-                  "console.log('✅ OpenHands triggered!');",
-                  "console.log('Issue: ' + pm.variables.get('ISSUE_NUMBER'));",
-                  "console.log('Repo: ' + pm.variables.get('REPO'));"
-                ]
-              }
-            }
-          ],
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/vnd.github.v3+json"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"event_type\": \"postman-webhook\",\n    \"client_payload\": {\n        \"issue\": {\n            \"number\": {{ISSUE_NUMBER}},\n            \"html_url\": \"https://github.com/{{REPO}}/issues/{{ISSUE_NUMBER}}\"\n        },\n        \"label\": {\n            \"name\": \"{{LABEL}}\"\n        },\n        \"repository\": \"{{REPO}}\"\n    }\n}"
-            },
-            "url": {
-              "raw": "https://api.github.com/repos/{{TARGET_REPO}}/dispatches",
-              "host": ["api", "github", "com"],
-              "path": ["repos", "{{TARGET_REPO}}", "dispatches"]
-            },
-            "description": "Trigger OpenHands by posting a repository_dispatch event."
-          }
-        }
-      ]
+      "name": "11thandOrange/BusyBuddy_v2 - Autonomous Dev",
+      "event": [{"listen": "test", "script": {"exec": ["pm.test('204 No Content', function() { pm.response.to.have.status(204); });"]}}],
+      "request": {
+        "method": "POST",
+        "header": [
+          {"key": "Accept", "value": "application/vnd.github.v3+json"},
+          {"key": "Content-Type", "value": "application/json"}
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"event_type\": \"postman-webhook\",\n    \"client_payload\": {\n        \"issue\": {\n            \"number\": {{ISSUE_NUMBER}},\n            \"html_url\": \"https://github.com/11thandOrange/BusyBuddy_v2/issues/{{ISSUE_NUMBER}}\"\n        },\n        \"label\": {\"name\": \"ready-to-implement\"},\n        \"repository\": \"11thandOrange/BusyBuddy_v2\"\n    }\n}"
+        },
+        "url": {"raw": "https://api.github.com/repos/{{TARGET_REPO}}/dispatches", "host": ["api", "github", "com"], "path": ["repos", "{{TARGET_REPO}}", "dispatches"]}
+      }
     },
     {
-      "name": "📁 Per-Repository Quick Triggers",
-      "item": [
-        {
-          "name": "11thandOrange/BusyBuddy_v2",
-          "item": [
-            {
-              "name": "🔵 Autonomous Dev (ready-to-implement)",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test('Successful dispatch', function() {",
-                      "    pm.response.to.have.status(204);",
-                      "});",
-                      "console.log('🚀 BusyBuddy Autonomous Dev triggered for issue #' + pm.variables.get('ISSUE_NUMBER'));"
-                    ]
-                  }
-                }
-              ],
-              "request": {
-                "method": "POST",
-                "header": [
-                  {"key": "Accept", "value": "application/vnd.github.v3+json"},
-                  {"key": "Content-Type", "value": "application/json"}
-                ],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n    \"event_type\": \"postman-webhook\",\n    \"client_payload\": {\n        \"issue\": {\n            \"number\": {{ISSUE_NUMBER}},\n            \"html_url\": \"https://github.com/11thandOrange/BusyBuddy_v2/issues/{{ISSUE_NUMBER}}\"\n        },\n        \"label\": {\"name\": \"ready-to-implement\"},\n        \"repository\": \"11thandOrange/BusyBuddy_v2\"\n    }\n}"
-                },
-                "url": {
-                  "raw": "https://api.github.com/repos/{{TARGET_REPO}}/dispatches",
-                  "host": ["api", "github", "com"],
-                  "path": ["repos", "{{TARGET_REPO}}", "dispatches"]
-                }
-              }
-            },
-            {
-              "name": "🟣 Complex Logic (complex-logic)",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test('Successful dispatch', function() {",
-                      "    pm.response.to.have.status(204);",
-                      "});"
-                    ]
-                  }
-                }
-              ],
-              "request": {
-                "method": "POST",
-                "header": [
-                  {"key": "Accept", "value": "application/vnd.github.v3+json"},
-                  {"key": "Content-Type", "value": "application/json"}
-                ],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n    \"event_type\": \"postman-webhook\",\n    \"client_payload\": {\n        \"issue\": {\n            \"number\": {{ISSUE_NUMBER}},\n            \"html_url\": \"https://github.com/11thandOrange/BusyBuddy_v2/issues/{{ISSUE_NUMBER}}\"\n        },\n        \"label\": {\"name\": \"complex-logic\"},\n        \"repository\": \"11thandOrange/BusyBuddy_v2\"\n    }\n}"
-                },
-                "url": {
-                  "raw": "https://api.github.com/repos/{{TARGET_REPO}}/dispatches",
-                  "host": ["api", "github", "com"],
-                  "path": ["repos", "{{TARGET_REPO}}", "dispatches"]
-                }
-              }
-            }
-          ]
+      "name": "11thandOrange/BusyBuddy_v2 - Complex Logic",
+      "event": [{"listen": "test", "script": {"exec": ["pm.test('204 No Content', function() { pm.response.to.have.status(204); });"]}}],
+      "request": {
+        "method": "POST",
+        "header": [
+          {"key": "Accept", "value": "application/vnd.github.v3+json"},
+          {"key": "Content-Type", "value": "application/json"}
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"event_type\": \"postman-webhook\",\n    \"client_payload\": {\n        \"issue\": {\n            \"number\": {{ISSUE_NUMBER}},\n            \"html_url\": \"https://github.com/11thandOrange/BusyBuddy_v2/issues/{{ISSUE_NUMBER}}\"\n        },\n        \"label\": {\"name\": \"complex-logic\"},\n        \"repository\": \"11thandOrange/BusyBuddy_v2\"\n    }\n}"
         },
-        {
-          "name": "11thandOrange/OrderMate",
-          "item": [
-            {
-              "name": "🔵 Autonomous Dev (ready-to-implement)",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": ["pm.test('Successful dispatch', function() { pm.response.to.have.status(204); });"]
-                  }
-                }
-              ],
-              "request": {
-                "method": "POST",
-                "header": [
-                  {"key": "Accept", "value": "application/vnd.github.v3+json"},
-                  {"key": "Content-Type", "value": "application/json"}
-                ],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n    \"event_type\": \"postman-webhook\",\n    \"client_payload\": {\n        \"issue\": {\n            \"number\": {{ISSUE_NUMBER}},\n            \"html_url\": \"https://github.com/11thandOrange/OrderMate/issues/{{ISSUE_NUMBER}}\"\n        },\n        \"label\": {\"name\": \"ready-to-implement\"},\n        \"repository\": \"11thandOrange/OrderMate\"\n    }\n}"
-                },
-                "url": {
-                  "raw": "https://api.github.com/repos/{{TARGET_REPO}}/dispatches",
-                  "host": ["api", "github", "com"],
-                  "path": ["repos", "{{TARGET_REPO}}", "dispatches"]
-                }
-              }
-            },
-            {
-              "name": "🟣 Complex Logic (complex-logic)",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": ["pm.test('Successful dispatch', function() { pm.response.to.have.status(204); });"]
-                  }
-                }
-              ],
-              "request": {
-                "method": "POST",
-                "header": [
-                  {"key": "Accept", "value": "application/vnd.github.v3+json"},
-                  {"key": "Content-Type", "value": "application/json"}
-                ],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n    \"event_type\": \"postman-webhook\",\n    \"client_payload\": {\n        \"issue\": {\n            \"number\": {{ISSUE_NUMBER}},\n            \"html_url\": \"https://github.com/11thandOrange/OrderMate/issues/{{ISSUE_NUMBER}}\"\n        },\n        \"label\": {\"name\": \"complex-logic\"},\n        \"repository\": \"11thandOrange/OrderMate\"\n    }\n}"
-                },
-                "url": {
-                  "raw": "https://api.github.com/repos/{{TARGET_REPO}}/dispatches",
-                  "host": ["api", "github", "com"],
-                  "path": ["repos", "{{TARGET_REPO}}", "dispatches"]
-                }
-              }
-            }
-          ]
+        "url": {"raw": "https://api.github.com/repos/{{TARGET_REPO}}/dispatches", "host": ["api", "github", "com"], "path": ["repos", "{{TARGET_REPO}}", "dispatches"]}
+      }
+    },
+    {
+      "name": "11thandOrange/OrderMate - Autonomous Dev",
+      "event": [{"listen": "test", "script": {"exec": ["pm.test('204 No Content', function() { pm.response.to.have.status(204); });"]}}],
+      "request": {
+        "method": "POST",
+        "header": [
+          {"key": "Accept", "value": "application/vnd.github.v3+json"},
+          {"key": "Content-Type", "value": "application/json"}
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"event_type\": \"postman-webhook\",\n    \"client_payload\": {\n        \"issue\": {\n            \"number\": {{ISSUE_NUMBER}},\n            \"html_url\": \"https://github.com/11thandOrange/OrderMate/issues/{{ISSUE_NUMBER}}\"\n        },\n        \"label\": {\"name\": \"ready-to-implement\"},\n        \"repository\": \"11thandOrange/OrderMate\"\n    }\n}"
         },
-        {
-          "name": "HeyItsChloe/mates4ever",
-          "item": [
-            {
-              "name": "🔵 Autonomous Dev (ready-to-implement)",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": ["pm.test('Successful dispatch', function() { pm.response.to.have.status(204); });"]
-                  }
-                }
-              ],
-              "request": {
-                "method": "POST",
-                "header": [
-                  {"key": "Accept", "value": "application/vnd.github.v3+json"},
-                  {"key": "Content-Type", "value": "application/json"}
-                ],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n    \"event_type\": \"postman-webhook\",\n    \"client_payload\": {\n        \"issue\": {\n            \"number\": {{ISSUE_NUMBER}},\n            \"html_url\": \"https://github.com/HeyItsChloe/mates4ever/issues/{{ISSUE_NUMBER}}\"\n        },\n        \"label\": {\"name\": \"ready-to-implement\"},\n        \"repository\": \"HeyItsChloe/mates4ever\"\n    }\n}"
-                },
-                "url": {
-                  "raw": "https://api.github.com/repos/{{TARGET_REPO}}/dispatches",
-                  "host": ["api", "github", "com"],
-                  "path": ["repos", "{{TARGET_REPO}}", "dispatches"]
-                }
-              }
-            },
-            {
-              "name": "🟣 Complex Logic (complex-logic)",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": ["pm.test('Successful dispatch', function() { pm.response.to.have.status(204); });"]
-                  }
-                }
-              ],
-              "request": {
-                "method": "POST",
-                "header": [
-                  {"key": "Accept", "value": "application/vnd.github.v3+json"},
-                  {"key": "Content-Type", "value": "application/json"}
-                ],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n    \"event_type\": \"postman-webhook\",\n    \"client_payload\": {\n        \"issue\": {\n            \"number\": {{ISSUE_NUMBER}},\n            \"html_url\": \"https://github.com/HeyItsChloe/mates4ever/issues/{{ISSUE_NUMBER}}\"\n        },\n        \"label\": {\"name\": \"complex-logic\"},\n        \"repository\": \"HeyItsChloe/mates4ever\"\n    }\n}"
-                },
-                "url": {
-                  "raw": "https://api.github.com/repos/{{TARGET_REPO}}/dispatches",
-                  "host": ["api", "github", "com"],
-                  "path": ["repos", "{{TARGET_REPO}}", "dispatches"]
-                }
-              }
-            }
-          ]
+        "url": {"raw": "https://api.github.com/repos/{{TARGET_REPO}}/dispatches", "host": ["api", "github", "com"], "path": ["repos", "{{TARGET_REPO}}", "dispatches"]}
+      }
+    },
+    {
+      "name": "11thandOrange/OrderMate - Complex Logic",
+      "event": [{"listen": "test", "script": {"exec": ["pm.test('204 No Content', function() { pm.response.to.have.status(204); });"]}}],
+      "request": {
+        "method": "POST",
+        "header": [
+          {"key": "Accept", "value": "application/vnd.github.v3+json"},
+          {"key": "Content-Type", "value": "application/json"}
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"event_type\": \"postman-webhook\",\n    \"client_payload\": {\n        \"issue\": {\n            \"number\": {{ISSUE_NUMBER}},\n            \"html_url\": \"https://github.com/11thandOrange/OrderMate/issues/{{ISSUE_NUMBER}}\"\n        },\n        \"label\": {\"name\": \"complex-logic\"},\n        \"repository\": \"11thandOrange/OrderMate\"\n    }\n}"
         },
-        {
-          "name": "openhands/openhands",
-          "item": [
-            {
-              "name": "🔵 Dev Pipeline (openhands-ready)",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": ["pm.test('Successful dispatch', function() { pm.response.to.have.status(204); });"]
-                  }
-                }
-              ],
-              "request": {
-                "method": "POST",
-                "header": [
-                  {"key": "Accept", "value": "application/vnd.github.v3+json"},
-                  {"key": "Content-Type", "value": "application/json"}
-                ],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n    \"event_type\": \"openhands-issue-labeled\",\n    \"client_payload\": {\n        \"issue\": {\n            \"number\": {{ISSUE_NUMBER}},\n            \"html_url\": \"https://github.com/openhands/openhands/issues/{{ISSUE_NUMBER}}\"\n        },\n        \"label\": {\"name\": \"openhands-ready\"},\n        \"repository\": \"openhands/openhands\"\n    }\n}"
-                },
-                "url": {
-                  "raw": "https://api.github.com/repos/{{TARGET_REPO}}/dispatches",
-                  "host": ["api", "github", "com"],
-                  "path": ["repos", "{{TARGET_REPO}}", "dispatches"]
-                }
-              }
-            }
-          ]
-        }
-      ]
+        "url": {"raw": "https://api.github.com/repos/{{TARGET_REPO}}/dispatches", "host": ["api", "github", "com"], "path": ["repos", "{{TARGET_REPO}}", "dispatches"]}
+      }
+    },
+    {
+      "name": "HeyItsChloe/mates4ever - Autonomous Dev",
+      "event": [{"listen": "test", "script": {"exec": ["pm.test('204 No Content', function() { pm.response.to.have.status(204); });"]}}],
+      "request": {
+        "method": "POST",
+        "header": [
+          {"key": "Accept", "value": "application/vnd.github.v3+json"},
+          {"key": "Content-Type", "value": "application/json"}
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"event_type\": \"postman-webhook\",\n    \"client_payload\": {\n        \"issue\": {\n            \"number\": {{ISSUE_NUMBER}},\n            \"html_url\": \"https://github.com/HeyItsChloe/mates4ever/issues/{{ISSUE_NUMBER}}\"\n        },\n        \"label\": {\"name\": \"ready-to-implement\"},\n        \"repository\": \"HeyItsChloe/mates4ever\"\n    }\n}"
+        },
+        "url": {"raw": "https://api.github.com/repos/{{TARGET_REPO}}/dispatches", "host": ["api", "github", "com"], "path": ["repos", "{{TARGET_REPO}}", "dispatches"]}
+      }
+    },
+    {
+      "name": "HeyItsChloe/mates4ever - Complex Logic",
+      "event": [{"listen": "test", "script": {"exec": ["pm.test('204 No Content', function() { pm.response.to.have.status(204); });"]}}],
+      "request": {
+        "method": "POST",
+        "header": [
+          {"key": "Accept", "value": "application/vnd.github.v3+json"},
+          {"key": "Content-Type", "value": "application/json"}
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"event_type\": \"postman-webhook\",\n    \"client_payload\": {\n        \"issue\": {\n            \"number\": {{ISSUE_NUMBER}},\n            \"html_url\": \"https://github.com/HeyItsChloe/mates4ever/issues/{{ISSUE_NUMBER}}\"\n        },\n        \"label\": {\"name\": \"complex-logic\"},\n        \"repository\": \"HeyItsChloe/mates4ever\"\n    }\n}"
+        },
+        "url": {"raw": "https://api.github.com/repos/{{TARGET_REPO}}/dispatches", "host": ["api", "github", "com"], "path": ["repos", "{{TARGET_REPO}}", "dispatches"]}
+      }
+    },
+    {
+      "name": "openhands/openhands - Dev Pipeline",
+      "event": [{"listen": "test", "script": {"exec": ["pm.test('204 No Content', function() { pm.response.to.have.status(204); });"]}}],
+      "request": {
+        "method": "POST",
+        "header": [
+          {"key": "Accept", "value": "application/vnd.github.v3+json"},
+          {"key": "Content-Type", "value": "application/json"}
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"event_type\": \"openhands-issue-labeled\",\n    \"client_payload\": {\n        \"issue\": {\n            \"number\": {{ISSUE_NUMBER}},\n            \"html_url\": \"https://github.com/openhands/openhands/issues/{{ISSUE_NUMBER}}\"\n        },\n        \"label\": {\"name\": \"openhands-ready\"},\n        \"repository\": \"openhands/openhands\"\n    }\n}"
+        },
+        "url": {"raw": "https://api.github.com/repos/{{TARGET_REPO}}/dispatches", "host": ["api", "github", "com"], "path": ["repos", "{{TARGET_REPO}}", "dispatches"]}
+      }
     }
   ]
 }
