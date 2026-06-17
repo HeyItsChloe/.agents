@@ -1,15 +1,13 @@
 {
   "info": {
     "name": "Automations - Local",
-    "description": "Trigger OpenHands via GitHub repository_dispatch. One click per issue.",
+    "description": "Trigger OpenHands via GitHub repository_dispatch. Set GITHUB_TOKEN in environment.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
     {"key": "GITHUB_TOKEN", "value": "", "description": "GitHub PAT with repo scope"},
-    {"key": "TARGET_REPO", "value": "HeyItsChloe/.agents"},
     {"key": "ISSUE_NUMBER", "value": "42"},
-    {"key": "REPO", "value": "11thandOrange/BusyBuddy_v2"},
-    {"key": "LABEL", "value": "ready-to-implement"}
+    {"key": "REPO", "value": "11thandOrange/BusyBuddy_v2"}
   ],
   "auth": {
     "type": "bearer",
@@ -29,7 +27,7 @@
           "mode": "raw",
           "raw": "{\n    \"event_type\": \"postman-webhook\",\n    \"client_payload\": {\n        \"issue\": {\n            \"number\": {{ISSUE_NUMBER}},\n            \"html_url\": \"https://github.com/11thandOrange/BusyBuddy_v2/issues/{{ISSUE_NUMBER}}\"\n        },\n        \"label\": {\"name\": \"ready-to-implement\"},\n        \"repository\": \"11thandOrange/BusyBuddy_v2\"\n    }\n}"
         },
-        "url": {"raw": "https://api.github.com/repos/{{TARGET_REPO}}/dispatches", "host": ["api", "github", "com"], "path": ["repos", "{{TARGET_REPO}}", "dispatches"]}
+        "url": "https://api.github.com/repos/HeyItsChloe/.agents/dispatches"
       }
     },
     {
@@ -45,7 +43,7 @@
           "mode": "raw",
           "raw": "{\n    \"event_type\": \"postman-webhook\",\n    \"client_payload\": {\n        \"issue\": {\n            \"number\": {{ISSUE_NUMBER}},\n            \"html_url\": \"https://github.com/11thandOrange/BusyBuddy_v2/issues/{{ISSUE_NUMBER}}\"\n        },\n        \"label\": {\"name\": \"complex-logic\"},\n        \"repository\": \"11thandOrange/BusyBuddy_v2\"\n    }\n}"
         },
-        "url": {"raw": "https://api.github.com/repos/{{TARGET_REPO}}/dispatches", "host": ["api", "github", "com"], "path": ["repos", "{{TARGET_REPO}}", "dispatches"]}
+        "url": "https://api.github.com/repos/HeyItsChloe/.agents/dispatches"
       }
     },
     {
@@ -61,7 +59,7 @@
           "mode": "raw",
           "raw": "{\n    \"event_type\": \"postman-webhook\",\n    \"client_payload\": {\n        \"issue\": {\n            \"number\": {{ISSUE_NUMBER}},\n            \"html_url\": \"https://github.com/11thandOrange/OrderMate/issues/{{ISSUE_NUMBER}}\"\n        },\n        \"label\": {\"name\": \"ready-to-implement\"},\n        \"repository\": \"11thandOrange/OrderMate\"\n    }\n}"
         },
-        "url": {"raw": "https://api.github.com/repos/{{TARGET_REPO}}/dispatches", "host": ["api", "github", "com"], "path": ["repos", "{{TARGET_REPO}}", "dispatches"]}
+        "url": "https://api.github.com/repos/HeyItsChloe/.agents/dispatches"
       }
     },
     {
@@ -77,7 +75,7 @@
           "mode": "raw",
           "raw": "{\n    \"event_type\": \"postman-webhook\",\n    \"client_payload\": {\n        \"issue\": {\n            \"number\": {{ISSUE_NUMBER}},\n            \"html_url\": \"https://github.com/11thandOrange/OrderMate/issues/{{ISSUE_NUMBER}}\"\n        },\n        \"label\": {\"name\": \"complex-logic\"},\n        \"repository\": \"11thandOrange/OrderMate\"\n    }\n}"
         },
-        "url": {"raw": "https://api.github.com/repos/{{TARGET_REPO}}/dispatches", "host": ["api", "github", "com"], "path": ["repos", "{{TARGET_REPO}}", "dispatches"]}
+        "url": "https://api.github.com/repos/HeyItsChloe/.agents/dispatches"
       }
     },
     {
@@ -93,7 +91,7 @@
           "mode": "raw",
           "raw": "{\n    \"event_type\": \"postman-webhook\",\n    \"client_payload\": {\n        \"issue\": {\n            \"number\": {{ISSUE_NUMBER}},\n            \"html_url\": \"https://github.com/HeyItsChloe/mates4ever/issues/{{ISSUE_NUMBER}}\"\n        },\n        \"label\": {\"name\": \"ready-to-implement\"},\n        \"repository\": \"HeyItsChloe/mates4ever\"\n    }\n}"
         },
-        "url": {"raw": "https://api.github.com/repos/{{TARGET_REPO}}/dispatches", "host": ["api", "github", "com"], "path": ["repos", "{{TARGET_REPO}}", "dispatches"]}
+        "url": "https://api.github.com/repos/HeyItsChloe/.agents/dispatches"
       }
     },
     {
@@ -109,7 +107,7 @@
           "mode": "raw",
           "raw": "{\n    \"event_type\": \"postman-webhook\",\n    \"client_payload\": {\n        \"issue\": {\n            \"number\": {{ISSUE_NUMBER}},\n            \"html_url\": \"https://github.com/HeyItsChloe/mates4ever/issues/{{ISSUE_NUMBER}}\"\n        },\n        \"label\": {\"name\": \"complex-logic\"},\n        \"repository\": \"HeyItsChloe/mates4ever\"\n    }\n}"
         },
-        "url": {"raw": "https://api.github.com/repos/{{TARGET_REPO}}/dispatches", "host": ["api", "github", "com"], "path": ["repos", "{{TARGET_REPO}}", "dispatches"]}
+        "url": "https://api.github.com/repos/HeyItsChloe/.agents/dispatches"
       }
     },
     {
@@ -125,7 +123,7 @@
           "mode": "raw",
           "raw": "{\n    \"event_type\": \"openhands-issue-labeled\",\n    \"client_payload\": {\n        \"issue\": {\n            \"number\": {{ISSUE_NUMBER}},\n            \"html_url\": \"https://github.com/openhands/openhands/issues/{{ISSUE_NUMBER}}\"\n        },\n        \"label\": {\"name\": \"openhands-ready\"},\n        \"repository\": \"openhands/openhands\"\n    }\n}"
         },
-        "url": {"raw": "https://api.github.com/repos/{{TARGET_REPO}}/dispatches", "host": ["api", "github", "com"], "path": ["repos", "{{TARGET_REPO}}", "dispatches"]}
+        "url": "https://api.github.com/repos/HeyItsChloe/.agents/dispatches"
       }
     }
   ]
